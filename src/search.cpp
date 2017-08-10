@@ -4,6 +4,7 @@
 #include "timer.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
 int rootDepth;
 
@@ -286,7 +287,8 @@ void SearchPosition(S_BOARD *pos, S_SEARCHINFO *info) {
             srand(TIME_MS);
             int r = rand() % moveList->count;
             bestMove = moveList->moves[r].move;
-            printf("bestmove %s\n", PrMove(bestMove));
+            std::cout << "bestmove " << PrMove(bestMove) << std::endl;
+            std::cout.flush();
             return;
         }
     }
@@ -314,19 +316,12 @@ void SearchPosition(S_BOARD *pos, S_SEARCHINFO *info) {
 			printf(" %s",PrMove(pos->PvArray[pvNum]));
 		}
 		printf("\n");
+        std::cout.flush();
 
 		//printf("Hits:%d Overwrite:%d NewWrite:%d Cut:%d\nOrdering %.2f NullCut:%d\n",pos->HashTable->hit,pos->HashTable->overWrite,pos->HashTable->newWrite,pos->HashTable->cut,
 		//(info->fhf/info->fh)*100,info->nullCut);
 	}
 
-	if(info->GAME_MODE == UCIMODE) {
-		printf("bestmove %s\n",PrMove(bestMove));
-	} else if(info->GAME_MODE == XBOARDMODE) {
-		printf("move %s\n",PrMove(bestMove));
-		MakeMove(pos, bestMove);
-	} else {
-		printf("\n\n***!! Vice makes move %s !!***\n\n",PrMove(bestMove));
-		MakeMove(pos, bestMove);
-		PrintBoard(pos);
-	}
+    std::cout << "bestmove " << PrMove(bestMove) << std::endl;
+    std::cout.flush();
 }

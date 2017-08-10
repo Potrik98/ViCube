@@ -36,5 +36,6 @@ void startTimer(S_SEARCHINFO *info, int moveTime) {
 void startTimer(S_SEARCHINFO *info, int timeLeft, int moveIncrement, int movesLeft) {
     int timeTotal = timeLeft + moveIncrement * movesLeft;
     int movetime = timeTotal / movesLeft;
+    printf("info starting timer with %d ms\n", movetime);
     startTimer(info, movetime);
 }

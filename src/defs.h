@@ -27,7 +27,7 @@ typedef unsigned long long U64;
 #define MAXPOSITIONMOVES 256
 #define MAXDEPTH 64
 #define MAX_BOOK_MOVES 32
-#define MOVES_LEFT_DEFAULT 40;
+#define MOVES_LEFT_DEFAULT 67;
 
 #define START_FEN  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
