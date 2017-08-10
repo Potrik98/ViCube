@@ -208,3 +208,23 @@ void GetBookMove(S_BOARD *board) {
 	printf("polyKey:%llx\n",polyKey);
 	ListBookMoves(polyKey, board);
 }
+
+void GetBookMoves(S_BOARD *board, S_MOVELIST* moveList) {
+    U64 polyKey = PolyKeyFromBoard(board);
+
+    int index = 0;
+    S_POLY_BOOK_ENTRY *entry;
+    unsigned short move;
+    int tempMove;
+    moveList->count = 0;
+
+    for (entry = entries; entry < entries + NumEntries; entry++) {
+        if (polyKey == endian_swap_u64(entry->key)) {
+            move = endian_swap_u16(entry->move);
+            tempMove = ConvertPolyMoveToInternalMove(move, board);
+            if (tempMove != NOMOVE) {
+                moveList->moves[moveList->count++].move = tempMove;
+            }
+        }
+    }
+}

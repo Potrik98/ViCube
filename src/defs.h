@@ -321,6 +321,7 @@ extern void MirrorEvalTest(S_BOARD *pos) ;
 // polybook.c
 extern void GetBookMove(S_BOARD *board);
 extern void CleanPolyBook();
-extern void InitPolyBook() ;
+extern void InitPolyBook();
+extern void GetBookMoves(S_BOARD* board, S_MOVELIST* moveList);
 
 #endif // !DEFS_H

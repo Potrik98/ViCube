@@ -230,7 +230,6 @@ bool startpos(std::string line, S_BOARD* board, S_SEARCHINFO* info) {
 			}
 		}
 	}
-
 	return true;
 }
 
@@ -325,7 +324,6 @@ void controlLoop(S_BOARD* board, S_SEARCHINFO* info) {
 				running = func(line.substr(command.length()), board, info);
 			}
 		}
-				
 	}
 
 	std::cout << "shutting down..." << std::endl;

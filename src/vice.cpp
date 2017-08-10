@@ -16,7 +16,7 @@ int main() {
     S_SEARCHINFO info[1];
     info->quit = FALSE;
 	pos->HashTable->pTable = 0;
-    InitHashTable(pos->HashTable, 64);
+    InitHashTable(pos->HashTable, 256);
     
     controlLoop(pos, info);
 

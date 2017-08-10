@@ -1,6 +1,7 @@
 // search.c
 
 #include "defs.h"
+#include "timer.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -278,6 +279,18 @@ void SearchPosition(S_BOARD *pos, S_SEARCHINFO *info) {
 	int pvMoves = 0;
 	int pvNum = 0;
 
+    if (EngineOptions->UseBook) {
+        S_MOVELIST moveList[1];
+        GetBookMoves(pos, moveList);
+        if (moveList->count > 0) {
+            srand(TIME_MS);
+            int r = rand() % moveList->count;
+            bestMove = moveList->moves[r].move;
+            printf("bestmove %s\n", PrMove(bestMove));
+            return;
+        }
+    }
+
 	ClearForSearch(pos,info);
 
 	//printf("Search depth:%d\n",info->depth);
@@ -316,5 +329,4 @@ void SearchPosition(S_BOARD *pos, S_SEARCHINFO *info) {
 		MakeMove(pos, bestMove);
 		PrintBoard(pos);
 	}
-
 }
