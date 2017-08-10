@@ -1,8 +1,7 @@
 // init.c
 
 #include "defs.h"
-#include "stdio.h"
-#include "stdlib.h"
+#include <cstdlib>
 
 #define RAND_64 	((U64)rand() | \
 					(U64)rand() << 15 | \

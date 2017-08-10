@@ -1,9 +1,6 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#include "stdlib.h"
-#include "stdio.h"
-
 // #define DEBUG
 
 #define MAX_HASH 1024
@@ -30,6 +27,7 @@ typedef unsigned long long U64;
 #define MAXPOSITIONMOVES 256
 #define MAXDEPTH 64
 #define MAX_BOOK_MOVES 32
+#define MOVES_LEFT_DEFAULT 40;
 
 #define START_FEN  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
@@ -176,6 +174,7 @@ typedef struct {
 #define TOSQ(m) (((m)>>7) & 0x7F)
 #define CAPTURED(m) (((m)>>14) & 0xF)
 #define PROMOTED(m) (((m)>>20) & 0xF)
+#define MOVE(f,t,ca,pro,fl) ( (f) | ((t) << 7) | ( (ca) << 14 ) | ( (pro) << 20 ) | (fl))
 
 #define MFLAGEP 0x40000
 #define MFLAGPS 0x80000
@@ -203,6 +202,7 @@ typedef struct {
 #define IsKi(p) (PieceKing[(p)])
 
 #define MIRROR64(sq) (Mirror64[(sq)])
+
 
 /* GLOBALS */
 
@@ -306,10 +306,6 @@ extern void PerftTest(int depth, S_BOARD *pos);
 // search.c
 extern void SearchPosition(S_BOARD *pos, S_SEARCHINFO *info);
 
-// misc.c
-extern int GetTimeMs();
-extern void ReadInput(S_SEARCHINFO *info);
-
 // pvtable.c
 extern void InitHashTable(S_HASHTABLE *table, const int MB);
 extern void StoreHashEntry(S_BOARD *pos, const int move, int score, const int flags, const int depth);
@@ -322,16 +318,9 @@ extern void ClearHashTable(S_HASHTABLE *table);
 extern int EvalPosition(const S_BOARD *pos);
 extern void MirrorEvalTest(S_BOARD *pos) ;
 
-// uci.c
-extern void Uci_Loop(S_BOARD *pos, S_SEARCHINFO *info);
-
-// xboard.c
-extern void XBoard_Loop(S_BOARD *pos, S_SEARCHINFO *info);
-extern void Console_Loop(S_BOARD *pos, S_SEARCHINFO *info);
-
 // polybook.c
 extern void GetBookMove(S_BOARD *board);
 extern void CleanPolyBook();
 extern void InitPolyBook() ;
 
-#endif
+#endif // !DEFS_H

@@ -1,7 +1,8 @@
 // pvtable.c
 
-#include "stdio.h"
 #include "defs.h"
+#include <stdio.h>
+#include <cstdlib>
 
 int GetPvLine(const int depth, S_BOARD *pos) {
 
@@ -51,12 +52,12 @@ void InitHashTable(S_HASHTABLE *table, const int MB) {
     table->numEntries = HashSize / sizeof(S_HASHENTRY);
     table->numEntries -= 2;
 	
-	if(table->pTable!=NULL) {
+	if(table->pTable) {
 		free(table->pTable);
 	}
 		
     table->pTable = (S_HASHENTRY *) malloc(table->numEntries * sizeof(S_HASHENTRY));
-	if(table->pTable == NULL) {
+	if(!table->pTable) {
 		printf("Hash Allocation Failed, trying %dMB...\n",MB/2);
 		InitHashTable(table,MB/2);
 	} else {

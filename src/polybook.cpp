@@ -1,5 +1,7 @@
 #include "defs.h"
 #include "polykeys.h"
+#include <stdio.h>
+#include <cstdlib>
 
 typedef struct {
 	U64 key;
@@ -21,7 +23,7 @@ void InitPolyBook() {
 
 	EngineOptions->UseBook = FALSE;
 	
-	FILE *pFile = fopen("performance.bin","rb");
+	FILE *pFile = fopen("book2.bin","rb");
 	
 	if(pFile == NULL) {
 		printf("Book File Not Read\n");
@@ -37,7 +39,7 @@ void InitPolyBook() {
 		NumEntries = position / sizeof(S_POLY_BOOK_ENTRY);
 		printf("%ld Entries Found In File\n", NumEntries);
 		
-		entries = (S_POLY_BOOK_ENTRY*)malloc(NumEntries * sizeof(S_POLY_BOOK_ENTRY));
+		entries = (S_POLY_BOOK_ENTRY*) malloc(NumEntries * sizeof(S_POLY_BOOK_ENTRY));
 		rewind(pFile);
 		
 		size_t returnValue;

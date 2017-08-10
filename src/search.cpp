@@ -1,19 +1,10 @@
 // search.c
 
-#include "stdio.h"
 #include "defs.h"
-
+#include <stdlib.h>
+#include <stdio.h>
 
 int rootDepth;
-
-static void CheckUp(S_SEARCHINFO *info) {
-	// .. check if time up, or interrupt from GUI
-	if(info->timeset == TRUE && GetTimeMs() > info->stoptime) {
-		info->stopped = TRUE;
-	}
-
-	ReadInput(info);
-}
 
 static void PickNextMove(int moveNum, S_MOVELIST *list) {
 
@@ -83,9 +74,6 @@ static int Quiescence(int alpha, int beta, S_BOARD *pos, S_SEARCHINFO *info) {
 
 	ASSERT(CheckBoard(pos));
 	ASSERT(beta>alpha);
-	if(( info->nodes & 2047 ) == 0) {
-		CheckUp(info);
-	}
 
 	info->nodes++;
 
@@ -158,10 +146,6 @@ static int AlphaBeta(int alpha, int beta, int depth, S_BOARD *pos, S_SEARCHINFO 
 	if(depth <= 0) {
 		return Quiescence(alpha, beta, pos, info);
 		// return EvalPosition(pos);
-	}
-
-	if(( info->nodes & 2047 ) == 0) {
-		CheckUp(info);
 	}
 
 	info->nodes++;
@@ -310,26 +294,13 @@ void SearchPosition(S_BOARD *pos, S_SEARCHINFO *info) {
 
 		pvMoves = GetPvLine(currentDepth, pos);
 		bestMove = pos->PvArray[0];
-		if(info->GAME_MODE == UCIMODE) {
-			printf("info score cp %d depth %d nodes %ld time %d ",
-				bestScore,currentDepth,info->nodes,GetTimeMs()-info->starttime);
-		} else if(info->GAME_MODE == XBOARDMODE && info->POST_THINKING == TRUE) {
-			printf("%d %d %d %ld ",
-				currentDepth,bestScore,(GetTimeMs()-info->starttime)/10,info->nodes);
-		} else if(info->POST_THINKING == TRUE) {
-			printf("score:%d depth:%d nodes:%ld time:%d(ms) ",
-				bestScore,currentDepth,info->nodes,GetTimeMs()-info->starttime);
+		printf("info score cp %d depth %d nodes %ld ", bestScore, currentDepth, info->nodes);
+		pvMoves = GetPvLine(currentDepth, pos);
+		printf("pv");
+		for(pvNum = 0; pvNum < pvMoves; ++pvNum) {
+			printf(" %s",PrMove(pos->PvArray[pvNum]));
 		}
-		if(info->GAME_MODE == UCIMODE || info->POST_THINKING == TRUE) {
-			pvMoves = GetPvLine(currentDepth, pos);
-			if(!info->GAME_MODE == XBOARDMODE) {
-				printf("pv");
-			}
-			for(pvNum = 0; pvNum < pvMoves; ++pvNum) {
-				printf(" %s",PrMove(pos->PvArray[pvNum]));
-			}
-			printf("\n");
-		}
+		printf("\n");
 
 		//printf("Hits:%d Overwrite:%d NewWrite:%d Cut:%d\nOrdering %.2f NullCut:%d\n",pos->HashTable->hit,pos->HashTable->overWrite,pos->HashTable->newWrite,pos->HashTable->cut,
 		//(info->fhf/info->fh)*100,info->nullCut);
